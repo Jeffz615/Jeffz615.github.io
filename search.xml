@@ -1639,4 +1639,22 @@
         <tag>一面</tag>
       </tags>
   </entry>
+  <entry>
+    <title>biliLiveOnlyAudio</title>
+    <url>/2021/04/03/biliLiveOnlyAudio/</url>
+    <content><![CDATA[<h2 id="bilibili直播间仅播放音频的直播流地址获取API"><a href="#bilibili直播间仅播放音频的直播流地址获取API" class="headerlink" title="bilibili直播间仅播放音频的直播流地址获取API"></a>bilibili直播间仅播放音频的直播流地址获取API</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$.<span class="keyword">get</span>("https://api.live.bilibili.com/xlive/app-room/v2/index/getRoomPlayInfo", &#123;</span><br><span class="line">    appkey: <span class="string">'iVGUTjsxvpLeuDCf'</span>,</span><br><span class="line">    build: <span class="number">6215200</span>,</span><br><span class="line">    c_locale: <span class="string">'zh_CN'</span>,</span><br><span class="line">    channel: <span class="string">'bili'</span>,</span><br><span class="line">    codec: <span class="number">0</span>,</span><br><span class="line">    device: <span class="string">'android'</span>,</span><br><span class="line">    device_name: <span class="string">'VTR-AL00'</span>,</span><br><span class="line">    dolby: <span class="number">1</span>,</span><br><span class="line">    format: <span class="string">'0,2'</span>,</span><br><span class="line">    free_type: <span class="number">0</span>,</span><br><span class="line">    http: <span class="number">1</span>,</span><br><span class="line">    mask: <span class="number">0</span>,</span><br><span class="line">    mobi_app: <span class="string">'android'</span>,</span><br><span class="line">    network: <span class="string">'wifi'</span>,</span><br><span class="line">    no_playurl: <span class="number">0</span>,</span><br><span class="line">    only_audio: <span class="number">1</span>,   <span class="comment">//1表示只有音频</span></span><br><span class="line">    only_video: <span class="number">0</span>,</span><br><span class="line">    platform: <span class="string">'android'</span>,</span><br><span class="line">    play_type: <span class="number">0</span>,</span><br><span class="line">    protocol: <span class="string">'0,1'</span>,</span><br><span class="line">    qn: <span class="number">10000</span>,</span><br><span class="line">    room_id: __NEPTUNE_IS_MY_WAIFU__.roomInitRes.data.room_id,  <span class="comment">// 直播间房号</span></span><br><span class="line">    s_locale: <span class="string">'zh_CN'</span>,</span><br><span class="line">    statistics: <span class="string">'&#123;"appId":1,"platform":3,"version":"6.21.5","abtest":""&#125;'</span>,</span><br><span class="line">    ts: <span class="built_in">Math</span>.floor(<span class="keyword">new</span> <span class="built_in">Date</span>().getTime())</span><br><span class="line">&#125;,</span><br><span class="line">    <span class="function"><span class="keyword">function</span> (<span class="params">data, textStatus, jqXHR</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> base_url = jqXHR.responseJSON.data.playurl_info.playurl.stream[<span class="number">0</span>].format[<span class="number">0</span>].codec[<span class="number">0</span>].base_url;</span><br><span class="line">        <span class="keyword">let</span> extra = jqXHR.responseJSON.data.playurl_info.playurl.stream[<span class="number">0</span>].format[<span class="number">0</span>].codec[<span class="number">0</span>].url_info[<span class="number">0</span>].extra;</span><br><span class="line">        <span class="keyword">let</span> host = jqXHR.responseJSON.data.playurl_info.playurl.stream[<span class="number">0</span>].format[<span class="number">0</span>].codec[<span class="number">0</span>].url_info[<span class="number">0</span>].host;</span><br><span class="line">        streamURL = host + base_url + extra;</span><br><span class="line">        <span class="built_in">console</span>.log(streamURL);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"json"</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>浏览器按F12，console中输入以上代码运行会得到流地址</p>
+]]></content>
+      <categories>
+        <category>note</category>
+      </categories>
+      <tags>
+        <tag>javascript</tag>
+        <tag>抓包</tag>
+        <tag>bilibili</tag>
+        <tag>live</tag>
+        <tag>api</tag>
+      </tags>
+  </entry>
 </search>
